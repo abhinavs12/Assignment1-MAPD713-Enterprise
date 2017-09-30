@@ -1,6 +1,6 @@
 {
   "name": "patient-records",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "Storing the patient records",
   "dependencies": {
     "restify": "4.1.1",
