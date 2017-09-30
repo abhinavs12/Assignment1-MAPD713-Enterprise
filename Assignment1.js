@@ -16,3 +16,11 @@ server.listen(port,host,function(){
     console.log('/patients')
     console.log('/patients/:id')
 })
+
+server
+
+.use(restify.fullResponse())
+
+
+.use(restify.bodyParser())
+
