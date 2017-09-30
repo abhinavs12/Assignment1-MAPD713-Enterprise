@@ -5,7 +5,9 @@
   "dependencies": {
     "restify": "4.1.1",
     "save": "2.3.0"
-  " main": "Assignment.js",
+  },
+
+  "main": "Assignment.js",
   
   "repository": {
     "type": "git",
