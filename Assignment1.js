@@ -24,3 +24,96 @@ server
 
 .use(restify.bodyParser())
 
+server.get('/patients',function(req,res,next){
+    patientSave.find({},function(error,users){
+        res.send(patients)
+    })
+})
+
+
+server.get('/patients/:id',function(req,res,next){
+    patientSave.findOne({_id=req.params.id},function(error,patient){
+        if (error){
+            return next(new restify.InvalidAgreementError(JQuery.stringify(errors,errors)))
+        }
+
+        if (patient){
+            res.send(patient)
+        }
+        else{
+            res.send(404)
+        }
+    })
+})
+
+
+server.post('/patients',function(req,res,next){
+    if(req.params.name==undefined){
+        return next(new restify.InvalidAgreementError('name must be supplied'))
+    }
+
+    if(req.params.age == undefined){
+        return next(new restify.InvalidAgreementError('age must be supplied'))
+    }
+
+    if(req.params.wardNumber==undefined){
+        return next(new restify.InvalidAgreementError('Ward Number is mandatory'))
+    }
+
+
+    var newPatient = {
+        name: req.params.name,
+        age:req.params.age,
+        wardNumber:req.params.wardNumber
+    }
+
+    patientSave.create(newPatient,function(error,patient){
+        if (error){
+            return next(new restify.InvalidAgreementError(JSON.stringify(error.errors)))
+        }
+
+        res.send(201,patient)
+    })
+})
+
+server.put('/patients/:id',function(req,res,next){
+    if(req.params.name==undefined){
+        return next(new restify.InvalidAgreementError('name must be supplied'))
+    }
+
+    if(req.params.age == undefined){
+        return next(new restify.InvalidAgreementError('age must be supplied'))
+    }
+
+    if(req.params.wardNumber==undefined){
+        return next(new restify.InvalidAgreementError('Ward Number is mandatory'))
+    }
+
+    var newPatient = {
+        _id:req.params.id,
+        name:req.params.name,
+        age:req.params.age,
+        wardNumber:req.params.wardNumber
+    }
+    
+    patientSave.update(newPatient,function(error,patient){
+
+        if (error){
+            return next(new restify.InvalidAgreementError(JSON.stringify(error.errors)))
+        }
+        res.send(200)
+    })
+})
+
+server.del('/users/:id', function (req, res, next) {
+    
+      
+      usersSave.delete(req.params.id, function (error, user) {
+    
+       
+        if (error) return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
+    
+        
+        res.send()
+      })
+    })
