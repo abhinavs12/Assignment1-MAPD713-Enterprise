@@ -25,16 +25,16 @@ server
 .use(restify.bodyParser())
 
 server.get('/patients',function(req,res,next){
-    patientSave.find({},function(error,users){
+    patientSave.find({},function(error, patients){
         res.send(patients)
     })
 })
 
 
 server.get('/patients/:id',function(req,res,next){
-    patientSave.findOne({_id=req.params.id},function(error,patient){
+    patientSave.findOne({_id:req.params.id},function(error,patient){
         if (error){
-            return next(new restify.InvalidAgreementError(JQuery.stringify(errors,errors)))
+            return next(new restify.InvalidArgumentError(JQuery.stringify(errors,errors)))
         }
 
         if (patient){
@@ -48,16 +48,16 @@ server.get('/patients/:id',function(req,res,next){
 
 
 server.post('/patients',function(req,res,next){
-    if(req.params.name==undefined){
-        return next(new restify.InvalidAgreementError('name must be supplied'))
+    if(req.params.name===undefined){
+        return next(new restify.InvalidArgumentError('name must be supplied'))
     }
 
-    if(req.params.age == undefined){
-        return next(new restify.InvalidAgreementError('age must be supplied'))
+    if(req.params.age === undefined){
+        return next(new restify.InvalidArgumentError('age must be supplied'))
     }
 
-    if(req.params.wardNumber==undefined){
-        return next(new restify.InvalidAgreementError('Ward Number is mandatory'))
+    if(req.params.wardNumber===undefined){
+        return next(new restify.InvalidArgumentError('Ward Number is mandatory'))
     }
 
 
@@ -69,7 +69,7 @@ server.post('/patients',function(req,res,next){
 
     patientSave.create(newPatient,function(error,patient){
         if (error){
-            return next(new restify.InvalidAgreementError(JSON.stringify(error.errors)))
+            return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
         }
 
         res.send(201,patient)
@@ -77,16 +77,16 @@ server.post('/patients',function(req,res,next){
 })
 
 server.put('/patients/:id',function(req,res,next){
-    if(req.params.name==undefined){
-        return next(new restify.InvalidAgreementError('name must be supplied'))
+    if(req.params.name===undefined){
+        return next(new restify.InvalidArgumentError('name must be supplied'))
     }
 
-    if(req.params.age == undefined){
-        return next(new restify.InvalidAgreementError('age must be supplied'))
+    if(req.params.age ===  undefined){
+        return next(new restify.InvalidArgumentError('age must be supplied'))
     }
 
-    if(req.params.wardNumber==undefined){
-        return next(new restify.InvalidAgreementError('Ward Number is mandatory'))
+    if(req.params.wardNumber===undefined){
+        return next(new restify.InvalidArgumentError('Ward Number is mandatory'))
     }
 
     var newPatient = {
@@ -99,16 +99,16 @@ server.put('/patients/:id',function(req,res,next){
     patientSave.update(newPatient,function(error,patient){
 
         if (error){
-            return next(new restify.InvalidAgreementError(JSON.stringify(error.errors)))
+            return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
         }
         res.send(200)
     })
 })
 
-server.del('/users/:id', function (req, res, next) {
+server.del('/patients/:id', function (req, res, next) {
     
       
-      usersSave.delete(req.params.id, function (error, user) {
+      patientSave.delete(req.params.id, function (error, patient) {
     
        
         if (error) return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
