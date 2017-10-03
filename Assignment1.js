@@ -4,6 +4,12 @@ var port = '8000'
 
 var host = '127.0.0.1'
 
+var getCounter = 0
+
+var getCounterById = 0
+
+var postCounter = 0
+
 var restify = require('restify'),
 
 patientSave = require('save')('patients'),
@@ -12,9 +18,9 @@ server = restify.createServer({name:'patient-api'})
 
 server.listen(port,host,function(){
     console.log('Server %s listening at %s',server.name,server.url)
-    console.log('Resources:')
-    console.log('/patients')
-    console.log('/patients/:id')
+    console.log('Endpoints: ')
+    console.log('%s/patients',server.url)
+    console.log('%s/patients/:id',server.url)
 })
 
 server
@@ -25,6 +31,9 @@ server
 .use(restify.bodyParser())
 
 server.get('/patients',function(req,res,next){
+
+    getCounter++;
+    console.log('Get Count : '+ getCounter)
     patientSave.find({},function(error, patients){
         res.send(patients)
     })
@@ -32,6 +41,11 @@ server.get('/patients',function(req,res,next){
 
 
 server.get('/patients/:id',function(req,res,next){
+
+        getCounterById++;
+
+        console.log('Get Count By Id : ' + getCounterById)
+
     patientSave.findOne({_id:req.params.id},function(error,patient){
         if (error){
             return next(new restify.InvalidArgumentError(JQuery.stringify(errors,errors)))
@@ -48,6 +62,11 @@ server.get('/patients/:id',function(req,res,next){
 
 
 server.post('/patients',function(req,res,next){
+
+        postCounter++;
+
+        console.log('Post Count : '+ postCounter)
+
     if(req.params.name===undefined){
         return next(new restify.InvalidArgumentError('name must be supplied'))
     }
